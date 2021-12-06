@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 12:57:59 by fvarrin           #+#    #+#             */
-/*   Updated: 2021/12/06 11:26:47 by fvarrin          ###   ########.fr       */
+/*   Updated: 2021/12/06 11:43:39 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,10 @@ void	print_usage(void)
 	exit(-1);
 }
 
-void	send_next_bit(int sig, siginfo_t *info, void *context)
+void	send_next_bit()
 {
 	char	c;
 
-	(void) sig;
-	(void) context;
-	(void) info;
 	if (g_binary_message.bit_cursor == 0)
 	{
 		c = g_binary_message.message[g_binary_message.char_cursor++];
@@ -65,7 +62,7 @@ int	main(int argc, char **argv)
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = send_next_bit;
 	sigaction(SIGUSR1, &sa, NULL);
-	send_next_bit(0, NULL, NULL);
+	send_next_bit();
 	while (1)
 	{
 		pause();
