@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 12:58:59 by fvarrin           #+#    #+#             */
-/*   Updated: 2021/12/06 10:12:53 by fvarrin          ###   ########.fr       */
+/*   Updated: 2021/12/06 11:22:48 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,28 +31,26 @@ void	handle_sigusr1(int sig, siginfo_t *info, void *context)
 {
 	(void) sig;
 	(void) context;
-	(void) info;
-	/* ft_printf("0"); */
 	g_binary_char.c ^= 0;
 	g_binary_char.cursor++;
 	if (g_binary_char.cursor == 8)
 		print_binary_char();
 	else
 		g_binary_char.c = g_binary_char.c << 1;
+	kill(info->si_pid, SIGUSR1);
 }
 
 void	handle_sigusr2(int sig, siginfo_t *info, void *context)
 {
 	(void) sig;
 	(void) context;
-	(void) info;
-	/* ft_printf("1"); */
 	g_binary_char.c ^= 1;
 	g_binary_char.cursor++;
 	if (g_binary_char.cursor == 8)
 		print_binary_char();
 	else
 		g_binary_char.c = g_binary_char.c << 1;
+	kill(info->si_pid, SIGUSR1);
 }
 
 int	main(void)

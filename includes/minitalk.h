@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 12:59:15 by fvarrin           #+#    #+#             */
-/*   Updated: 2021/12/04 15:25:34 by fvarrin          ###   ########.fr       */
+/*   Updated: 2021/12/06 11:23:46 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,4 +18,11 @@ typedef struct s_binary_char {
 	int		cursor;
 }	t_binary_char;
 
+typedef struct s_binary_message {
+	int		pid;
+	char	*message;
+	char	c;
+	int		bit_cursor;
+	int		char_cursor;
+}	t_binary_message;
 #endif

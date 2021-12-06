@@ -6,17 +6,19 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 12:57:59 by fvarrin           #+#    #+#             */
-/*   Updated: 2021/12/06 10:29:36 by fvarrin          ###   ########.fr       */
+/*   Updated: 2021/12/06 11:26:47 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
 #include "libft.h"
 #include "minitalk.h"
+
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+t_binary_message	g_binary_message = {0, NULL, 0, 0, 0};
 
 void	print_usage(void)
 {
@@ -24,34 +26,49 @@ void	print_usage(void)
 	exit(-1);
 }
 
+void	send_next_bit(int sig, siginfo_t *info, void *context)
+{
+	char	c;
+
+	(void) sig;
+	(void) context;
+	(void) info;
+	if (g_binary_message.bit_cursor == 0)
+	{
+		c = g_binary_message.message[g_binary_message.char_cursor++];
+		if (!c)
+			exit(0);
+		g_binary_message.c = c;
+	}
+	if (g_binary_message.c & 0b10000000)
+		kill(g_binary_message.pid, SIGUSR2);
+	else
+		kill(g_binary_message.pid, SIGUSR1);
+	g_binary_message.c = g_binary_message.c << 0b1;
+	g_binary_message.bit_cursor++;
+	if (g_binary_message.bit_cursor == 8)
+		g_binary_message.bit_cursor = 0;
+}
+
 int	main(int argc, char **argv)
 {
-	int		i;
-	int		j;
-	int		pid;
-	int		strlen;
-	char	c;
+	struct sigaction	sa;
+	int					pid;
 
 	if (argc != 3)
 		print_usage();
-	i = 0;
-	j = 0;
-	strlen = ft_strlen(argv[2]);
 	pid = ft_atoi(argv[1]);
-	while (i < strlen)
+	if (pid <= 0)
+		print_usage();
+	g_binary_message.pid = pid;
+	g_binary_message.message = argv[2];
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_sigaction = send_next_bit;
+	sigaction(SIGUSR1, &sa, NULL);
+	send_next_bit(0, NULL, NULL);
+	while (1)
 	{
-		c = argv[2][i++];
-		j = 0;
-		while (j < 8) {
-			if (c & 0b10000000)
-				kill(pid, SIGUSR2);
-			else
-				kill(pid, SIGUSR1);
-			c = c << 0b1;
-			j++;
-			usleep(100);
-		}
-		usleep(1000);
+		pause();
 	}
 	return (0);
 }
