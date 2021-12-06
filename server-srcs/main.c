@@ -6,36 +6,25 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 12:58:59 by fvarrin           #+#    #+#             */
-/*   Updated: 2021/12/02 17:12:37 by fvarrin          ###   ########.fr       */
+/*   Updated: 2021/12/06 10:12:53 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minitalk.h"
 
-#include <stdlib.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <signal.h>
 #include <stdio.h>
 
-t_binary_char	g_binary_char = {{0}, 0};
+t_binary_char	g_binary_char = {0, 0};
 
 void	print_binary_char(void)
 {
-	char	decimal_base[11];
-	char	binary_base[11];
-	char	*decimal_value;
-	char	*binary_value;
-	int		ascii_value;
-
-	ft_build_decimalbase(decimal_base);
-	ft_build_binary_base(binary_base);
-	binary_value = g_binary_char.binary_value;
-	decimal_value = ft_convert_base(binary_value, binary_base, decimal_base);
-	ascii_value = ft_atoi(decimal_value);
-	free(decimal_value);
-	ft_printf("%c", ascii_value);
+	ft_printf("%c", g_binary_char.c);
 	g_binary_char.cursor = 0;
+	g_binary_char.c = 0;
 }
 
 void	handle_sigusr1(int sig, siginfo_t *info, void *context)
@@ -43,10 +32,13 @@ void	handle_sigusr1(int sig, siginfo_t *info, void *context)
 	(void) sig;
 	(void) context;
 	(void) info;
-	g_binary_char.binary_value[g_binary_char.cursor] = '0';
+	/* ft_printf("0"); */
+	g_binary_char.c ^= 0;
 	g_binary_char.cursor++;
-	if (g_binary_char.cursor == 7)
+	if (g_binary_char.cursor == 8)
 		print_binary_char();
+	else
+		g_binary_char.c = g_binary_char.c << 1;
 }
 
 void	handle_sigusr2(int sig, siginfo_t *info, void *context)
@@ -54,10 +46,13 @@ void	handle_sigusr2(int sig, siginfo_t *info, void *context)
 	(void) sig;
 	(void) context;
 	(void) info;
-	g_binary_char.binary_value[g_binary_char.cursor] = '1';
+	/* ft_printf("1"); */
+	g_binary_char.c ^= 1;
 	g_binary_char.cursor++;
-	if (g_binary_char.cursor == 7)
+	if (g_binary_char.cursor == 8)
 		print_binary_char();
+	else
+		g_binary_char.c = g_binary_char.c << 1;
 }
 
 int	main(void)

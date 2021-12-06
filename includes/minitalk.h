@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 12:59:15 by fvarrin           #+#    #+#             */
-/*   Updated: 2021/12/02 17:07:34 by fvarrin          ###   ########.fr       */
+/*   Updated: 2021/12/04 15:25:34 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define MINITALK_H
 
 typedef struct s_binary_char {
-	char	binary_value[7];
+	char	c;
 	int		cursor;
 }	t_binary_char;
 
