@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 12:58:59 by fvarrin           #+#    #+#             */
-/*   Updated: 2021/12/06 11:45:48 by fvarrin          ###   ########.fr       */
+/*   Updated: 2021/12/08 10:31:06 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ void	print_binary_char(void)
 	g_binary_char.c = 0;
 }
 
-void	handle_sigusr1(int sig __attribute__((unused)), siginfo_t *info, void *context __attribute__((unused)))
+void	handle_sigusr1(
+			int sig __attribute__((unused)),
+			siginfo_t *info,
+			void *context __attribute__((unused))
+		)
 {
 	g_binary_char.c ^= 0;
 	g_binary_char.cursor++;
@@ -38,7 +42,11 @@ void	handle_sigusr1(int sig __attribute__((unused)), siginfo_t *info, void *cont
 	kill(info->si_pid, SIGUSR1);
 }
 
-void	handle_sigusr2(int sig __attribute__((unused)), siginfo_t *info, void *context __attribute__((unused)))
+void	handle_sigusr2(
+			int sig __attribute__((unused)),
+			siginfo_t *info,
+			void *context __attribute__((unused))
+		)
 {
 	g_binary_char.c ^= 1;
 	g_binary_char.cursor++;

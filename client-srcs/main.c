@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 12:57:59 by fvarrin           #+#    #+#             */
-/*   Updated: 2021/12/06 11:43:39 by fvarrin          ###   ########.fr       */
+/*   Updated: 2021/12/08 10:31:23 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	print_usage(void)
 	exit(-1);
 }
 
-void	send_next_bit()
+void	send_next_bit(void)
 {
 	char	c;
 
