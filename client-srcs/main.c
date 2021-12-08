@@ -6,7 +6,7 @@
 /*   By: fvarrin <florian.varrin@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 12:57:59 by fvarrin           #+#    #+#             */
-/*   Updated: 2021/12/08 10:31:23 by fvarrin          ###   ########.fr       */
+/*   Updated: 2021/12/08 13:56:42 by fvarrin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,11 @@ void	print_usage(void)
 	exit(-1);
 }
 
-void	send_next_bit(void)
+void	send_next_bit(
+			int sig __attribute__((unused)),
+			siginfo_t *info __attribute__((unused)),
+			void *context __attribute__((unused))
+		)
 {
 	char	c;
 
@@ -62,7 +66,7 @@ int	main(int argc, char **argv)
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = send_next_bit;
 	sigaction(SIGUSR1, &sa, NULL);
-	send_next_bit();
+	send_next_bit(0, NULL, NULL);
 	while (1)
 	{
 		pause();
